@@ -1,0 +1,17 @@
+{
+  "name": "@zeyber/master-list-bumble-provider",
+  "version": "0.1.0",
+  "description": "Master List Provider for Bumble.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "Caine Rotherham",
+  "dependencies": {
+    "@master-list/core": "^0.1.0",
+    "@zeyber/master-list-facebook-provider": "^0.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.6.3"
+  }
+}

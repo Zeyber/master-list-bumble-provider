@@ -1,0 +1,5 @@
+.credentials
+.env
+node_modules
+# dist // TODO: Start ignoring after publishing to npm
+.DS_Store
