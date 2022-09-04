@@ -111,7 +111,7 @@ var BumbleProvider = /** @class */ (function (_super) {
                                 case 0:
                                     _a.trys.push([0, 2, , 3]);
                                     return [4 /*yield*/, (function () { return __awaiter(_this, void 0, void 0, function () {
-                                            var body, bodySa, but, bodyz, bodySaz, but2, button;
+                                            var consentFrame, consentContent, manageCookiesButton, privacyManagerFrame, privacyManagerContent, rejectButton, loginWithFacebookBtn;
                                             return __generator(this, function (_a) {
                                                 switch (_a.label) {
                                                     case 0: return [4 /*yield*/, (0, master_list_facebook_provider_1.loginWithFacebook)({
@@ -128,14 +128,14 @@ var BumbleProvider = /** @class */ (function (_super) {
                                                         _a.sent();
                                                         return [4 /*yield*/, this.page.waitForSelector('iframe[src*="https://consent.bumble.com"]')];
                                                     case 3:
-                                                        body = _a.sent();
-                                                        return [4 /*yield*/, body.contentFrame()];
+                                                        consentFrame = _a.sent();
+                                                        return [4 /*yield*/, consentFrame.contentFrame()];
                                                     case 4:
-                                                        bodySa = _a.sent();
-                                                        return [4 /*yield*/, bodySa.waitForSelector('[title="Manage Cookies"]')];
+                                                        consentContent = _a.sent();
+                                                        return [4 /*yield*/, consentContent.waitForSelector('[title="Manage Cookies"]')];
                                                     case 5:
-                                                        but = _a.sent();
-                                                        return [4 /*yield*/, but.click()];
+                                                        manageCookiesButton = _a.sent();
+                                                        return [4 /*yield*/, manageCookiesButton.click()];
                                                     case 6:
                                                         _a.sent();
                                                         return [4 /*yield*/, this.page.waitForTimeout(3000)];
@@ -143,20 +143,20 @@ var BumbleProvider = /** @class */ (function (_super) {
                                                         _a.sent();
                                                         return [4 /*yield*/, this.page.waitForSelector('iframe[src*="https://consent.bumble.com/privacy-manager"]')];
                                                     case 8:
-                                                        bodyz = _a.sent();
-                                                        return [4 /*yield*/, bodyz.contentFrame()];
+                                                        privacyManagerFrame = _a.sent();
+                                                        return [4 /*yield*/, privacyManagerFrame.contentFrame()];
                                                     case 9:
-                                                        bodySaz = _a.sent();
-                                                        return [4 /*yield*/, bodySaz.waitForSelector('[title="Reject All"]')];
+                                                        privacyManagerContent = _a.sent();
+                                                        return [4 /*yield*/, privacyManagerContent.waitForSelector('[title="Reject All"]')];
                                                     case 10:
-                                                        but2 = _a.sent();
-                                                        return [4 /*yield*/, but2.click()];
+                                                        rejectButton = _a.sent();
+                                                        return [4 /*yield*/, rejectButton.click()];
                                                     case 11:
                                                         _a.sent();
                                                         return [4 /*yield*/, this.page.waitForSelector('div[class="button button--size-m  color-provider-facebook button--filled"]')];
                                                     case 12:
-                                                        button = _a.sent();
-                                                        return [4 /*yield*/, button.click()];
+                                                        loginWithFacebookBtn = _a.sent();
+                                                        return [4 /*yield*/, loginWithFacebookBtn.click()];
                                                     case 13:
                                                         _a.sent();
                                                         resolve(true);

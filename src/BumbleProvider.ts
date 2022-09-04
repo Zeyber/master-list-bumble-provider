@@ -44,28 +44,32 @@ export class BumbleProvider extends PuppeteerProvider {
             waitUntil: ["load", "networkidle2"],
           });
 
-          const body = await this.page.waitForSelector(
+          const consentFrame = await this.page.waitForSelector(
             'iframe[src*="https://consent.bumble.com"]'
           );
+          const consentContent = await consentFrame.contentFrame();
 
-          const bodySa = await body.contentFrame();
-
-          const but = await bodySa.waitForSelector('[title="Manage Cookies"]');
-          await but.click();
+          const manageCookiesButton = await consentContent.waitForSelector(
+            '[title="Manage Cookies"]'
+          );
+          await manageCookiesButton.click();
 
           await this.page.waitForTimeout(3000);
 
-          const bodyz = await this.page.waitForSelector(
+          const privacyManagerFrame = await this.page.waitForSelector(
             'iframe[src*="https://consent.bumble.com/privacy-manager"]'
           );
-          const bodySaz = await bodyz.contentFrame();
-          const but2 = await bodySaz.waitForSelector('[title="Reject All"]');
-          await but2.click();
+          const privacyManagerContent =
+            await privacyManagerFrame.contentFrame();
+          const rejectButton = await privacyManagerContent.waitForSelector(
+            '[title="Reject All"]'
+          );
+          await rejectButton.click();
 
-          const button = await this.page.waitForSelector(
+          const loginWithFacebookBtn = await this.page.waitForSelector(
             'div[class="button button--size-m  color-provider-facebook button--filled"]'
           );
-          await button.click();
+          await loginWithFacebookBtn.click();
 
           resolve(true);
         })();
