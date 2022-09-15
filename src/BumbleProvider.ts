@@ -1,13 +1,23 @@
 import { ProviderOptions, PuppeteerProvider } from "@master-list/core";
 import { loginWithFacebook } from "@zeyber/master-list-facebook-provider";
 
+export enum BUMBLE_NOTIFICATION_MODE {
+  YOUR_MOVE = "YOUR_MOVE",
+  UNREAD = "UNREAD",
+}
+
 export interface BumbleOptions extends ProviderOptions {
   email: string;
   password: string;
+  notifyOn?: BUMBLE_NOTIFICATION_MODE[];
 }
 
-export const defaultOptions: ProviderOptions = {
+export const defaultOptions: ProviderOptions | BumbleOptions = {
   providerName: "Bumble",
+  notifyOn: [
+    BUMBLE_NOTIFICATION_MODE.YOUR_MOVE,
+    BUMBLE_NOTIFICATION_MODE.UNREAD,
+  ],
 };
 
 export class BumbleProvider extends PuppeteerProvider {
@@ -83,14 +93,26 @@ export class BumbleProvider extends PuppeteerProvider {
     return new Promise(async (resolve) => {
       const markers = await this.page.$$("div.contact");
       const chats = [];
+      const notifyOn = this.options.notifyOn ?? (<any>defaultOptions).notifyOn;
 
       for (const marker of markers) {
-        const val = await marker.evaluate((el) =>
-          el.getElementsByClassName("contact__move-label")?.length ||
-          el.getElementsByClassName("contact__notification-mark")?.length
-            ? el.getAttribute("data-qa-name")
-            : undefined
-        );
+        let val: string | undefined;
+
+        if (!val && notifyOn.includes(BUMBLE_NOTIFICATION_MODE.UNREAD)) {
+          val = await marker.evaluate((el) =>
+            el.getElementsByClassName("contact__notification-mark")?.length
+              ? el.getAttribute("data-qa-name")
+              : undefined
+          );
+        }
+
+        if (!val && notifyOn.includes(BUMBLE_NOTIFICATION_MODE.YOUR_MOVE)) {
+          val = await marker.evaluate((el) =>
+            el.getElementsByClassName("contact__move-label")?.length
+              ? el.getAttribute("data-qa-name")
+              : undefined
+          );
+        }
 
         if (val) {
           chats.push(val);
