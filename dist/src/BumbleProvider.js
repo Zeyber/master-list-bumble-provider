@@ -62,11 +62,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BumbleProvider = exports.defaultOptions = void 0;
+exports.BumbleProvider = exports.defaultOptions = exports.BUMBLE_NOTIFICATION_MODE = void 0;
 var core_1 = require("@master-list/core");
 var master_list_facebook_provider_1 = require("@zeyber/master-list-facebook-provider");
+var BUMBLE_NOTIFICATION_MODE;
+(function (BUMBLE_NOTIFICATION_MODE) {
+    BUMBLE_NOTIFICATION_MODE["YOUR_MOVE"] = "YOUR_MOVE";
+    BUMBLE_NOTIFICATION_MODE["UNREAD"] = "UNREAD";
+})(BUMBLE_NOTIFICATION_MODE = exports.BUMBLE_NOTIFICATION_MODE || (exports.BUMBLE_NOTIFICATION_MODE = {}));
 exports.defaultOptions = {
     providerName: "Bumble",
+    notifyOn: [
+        BUMBLE_NOTIFICATION_MODE.YOUR_MOVE,
+        BUMBLE_NOTIFICATION_MODE.UNREAD,
+    ],
 };
 var BumbleProvider = /** @class */ (function (_super) {
     __extends(BumbleProvider, _super);
@@ -183,35 +192,51 @@ var BumbleProvider = /** @class */ (function (_super) {
             var _this = this;
             return __generator(this, function (_a) {
                 return [2 /*return*/, new Promise(function (resolve) { return __awaiter(_this, void 0, void 0, function () {
-                        var markers, chats, _i, markers_1, marker, val;
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
+                        var markers, chats, notifyOn, _i, markers_1, marker, val;
+                        var _a;
+                        return __generator(this, function (_b) {
+                            switch (_b.label) {
                                 case 0: return [4 /*yield*/, this.page.$$("div.contact")];
                                 case 1:
-                                    markers = _a.sent();
+                                    markers = _b.sent();
                                     chats = [];
+                                    notifyOn = (_a = this.options.notifyOn) !== null && _a !== void 0 ? _a : exports.defaultOptions.notifyOn;
                                     _i = 0, markers_1 = markers;
-                                    _a.label = 2;
+                                    _b.label = 2;
                                 case 2:
-                                    if (!(_i < markers_1.length)) return [3 /*break*/, 5];
+                                    if (!(_i < markers_1.length)) return [3 /*break*/, 8];
                                     marker = markers_1[_i];
+                                    val = void 0;
+                                    if (!(!val && notifyOn.includes(BUMBLE_NOTIFICATION_MODE.UNREAD))) return [3 /*break*/, 4];
                                     return [4 /*yield*/, marker.evaluate(function (el) {
-                                            var _a, _b;
-                                            return ((_a = el.getElementsByClassName("contact__move-label")) === null || _a === void 0 ? void 0 : _a.length) ||
-                                                ((_b = el.getElementsByClassName("contact__notification-mark")) === null || _b === void 0 ? void 0 : _b.length)
+                                            var _a;
+                                            return ((_a = el.getElementsByClassName("contact__notification-mark")) === null || _a === void 0 ? void 0 : _a.length)
                                                 ? el.getAttribute("data-qa-name")
                                                 : undefined;
                                         })];
                                 case 3:
-                                    val = _a.sent();
+                                    val = _b.sent();
+                                    _b.label = 4;
+                                case 4:
+                                    if (!(!val && notifyOn.includes(BUMBLE_NOTIFICATION_MODE.YOUR_MOVE))) return [3 /*break*/, 6];
+                                    return [4 /*yield*/, marker.evaluate(function (el) {
+                                            var _a;
+                                            return ((_a = el.getElementsByClassName("contact__move-label")) === null || _a === void 0 ? void 0 : _a.length)
+                                                ? el.getAttribute("data-qa-name")
+                                                : undefined;
+                                        })];
+                                case 5:
+                                    val = _b.sent();
+                                    _b.label = 6;
+                                case 6:
                                     if (val) {
                                         chats.push(val);
                                     }
-                                    _a.label = 4;
-                                case 4:
+                                    _b.label = 7;
+                                case 7:
                                     _i++;
                                     return [3 /*break*/, 2];
-                                case 5: return [2 /*return*/, resolve(chats)];
+                                case 8: return [2 /*return*/, resolve(chats)];
                             }
                         });
                     }); })];
